@@ -1,14 +1,13 @@
 # Airflow image
 FROM apache/airflow:2.5.1
 
-# User root to install airflow packages
-USER root
+
+USER airflow
 
 # Install airflow packages
 RUN pip install apache-airflow-providers-amazon
 
-# Switch back to airflow
-USER airflow
+USER root
 
 # Copy dags to the dags directory
 COPY dags/ /opt/airflow/dags/
