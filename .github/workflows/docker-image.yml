@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: your-dockerhub-username/your-repo:latest
+          tags: ahjung/de-3-1-airflow:latest
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -37,6 +37,6 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} -J ec2-user@bastion-ip-address ec2-user@private-ec2-ip-address <<EOF
-          docker pull your-dockerhub-username/your-repo:latest
-          docker run -d -p 8080:8080 your-dockerhub-username/your-repo:latest
+          docker pull ahjung/de-3-1-airflow:latest
+          docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
