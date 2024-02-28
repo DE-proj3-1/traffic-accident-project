@@ -27,15 +27,19 @@ jobs:
           push: true
           tags: ahjung/de-3-1-airflow:latest
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
       - name: Decode SSH key
+        id: decode_key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
           chmod 600 de-3-1-airflow.pem
+          echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
+
+      
 
       - name: Deploy to EC2
         run: |
