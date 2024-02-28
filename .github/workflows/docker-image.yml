@@ -32,6 +32,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Decode SSH key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
+          chmod 600 de-3-1-airflow.pem
+
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} -J ec2-user@bastion-ip-address ec2-user@private-ec2-ip-address <<EOF
