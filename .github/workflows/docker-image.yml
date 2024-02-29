@@ -35,16 +35,23 @@ jobs:
           echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
 
       - name: Set up SSH
-        uses: appleboy/ssh-action@master 
-        # webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@master
         with:
-          ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ steps.decode_key.outputs.SSH_KEY }}
+
+      # - name: Set up SSH
+      #   uses: appleboy/ssh-action@master 
+      #   # webfactory/ssh-agent@v0.5.3
+      #   with:
+      #     ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
 
       
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} -J ec2-user@bastion-ip-address ec2-user@private-ec2-ip-address <<EOF
+          ssh -o StrictHostKeyChecking=no -i ${{ steps.decode_key.outputs.SSH_KEY }} -J ec2-user@bastion-ip-address ec2-user@private-ec2-ip-address <<EOF
           docker pull ahjung/de-3-1-airflow:latest
           docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
