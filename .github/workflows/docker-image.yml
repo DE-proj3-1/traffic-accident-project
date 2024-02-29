@@ -14,41 +14,27 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      # - name: Login to DockerHub
-      #   uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USER }}
-      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      # - name: Build and push Docker image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: .
-      #     push: true
-      #     tags: ahjung/de-3-1-airflow:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ahjung/de-3-1-airflow:latest
 
 
-      # - name: Decode Bastion SSH key
-      #   id: decode_bastion_key
-      #   run: |
-      #     echo "${{ secrets.SSH_BASTION_KEY }}" | base64 -d > de-3-1-key.pem
-      #     chmod 600 de-3-1-key.pem
-      #     echo "::set-output name=SSH_KEY::$(cat de-3-1-key.pem)"
-
-      # - name: Decode Private SSH key
-      #   id: decode_private_key
-      #   run: |
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
-      #     chmod 600 de-3-1-airflow.pem
-      #     echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
-
-      # - name: Set up SSH
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.BASTION_HOST }}  # 바스티온 서버의 호스트명 또는 IP 주소
-      #     username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
-      #     # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
-      #     key: ${{ secrets.SSH_BASTION_KEY }}
+      - name: Set up SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.BASTION_HOST }}  # 바스티온 서버의 호스트명 또는 IP 주소
+          username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
+          # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
+          key: ${{ secrets.SSH_BASTION_KEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
