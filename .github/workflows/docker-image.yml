@@ -35,7 +35,8 @@ jobs:
           echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+        uses: appleboy/ssh-action@master 
+        # webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
 
