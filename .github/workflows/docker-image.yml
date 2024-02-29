@@ -56,7 +56,12 @@ jobs:
       #   with:
       #     ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
 
-      
+      - name: Write SSH keys
+        run: |
+          echo "${{ secrets.SSH_BASTION_KEY }}" > de-3-1-key.pem
+          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > de-3-1-airflow.pem
+          chmod 600 de-3-1-key.pem # de-3-1-airflow.pem
+
 
       - name: Deploy to EC2
         run: |
