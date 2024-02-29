@@ -14,18 +14,18 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      # - name: Login to DockerHub
+      #   uses: docker/login-action@v1
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USER }}
+      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ahjung/de-3-1-airflow:latest
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: ahjung/de-3-1-airflow:latest
 
 
       # - name: Decode Bastion SSH key
@@ -60,17 +60,12 @@ jobs:
         run: |
           echo "${{ secrets.SSH_BASTION_KEY }}" > de-3-1-key.pem
           chmod 600 de-3-1-key.pem 
-        # echo "${{ secrets.SSH_PRIVATE_KEY }}" > de-3-1-airflow.pem
-        # de-3-1-airflow.pem
 
 
       - name: Deploy to EC2
         run: |
-          ssh -i de-3-1-key.pem ubuntu@${{ secrets.BASTION_HOST }}
-          ssh -i de-3-1-airflow.pem ubuntu@${{ secrets.PRIVATE_HOST }}
+          ssh -i de-3-1-key.pem ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}
+          ssh -i de-3-1-airflow.pem ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }}
           docker pull ahjung/de-3-1-airflow:latest
           docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
-
-      # ssh -o StrictHostKeyChecking=no -tt -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
-      # ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem
