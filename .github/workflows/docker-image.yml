@@ -27,8 +27,15 @@ jobs:
           push: true
           tags: ahjung/de-3-1-airflow:latest
 
-      - name: Decode SSH key
-        id: decode_key
+      - name: Decode Bastion SSH key
+        id: decode_bastion_key
+        run: |
+          echo "${{ secrets.SSH_BASTION_KEY }}" | base64 -d > de-3-1-key.pem
+          chmod 600 de-3-1-key.pem
+          echo "::set-output name=SSH_KEY::$(cat de-3-1-key.pem)"
+
+      - name: Decode Private SSH key
+        id: decode_private_key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
           chmod 600 de-3-1-airflow.pem
@@ -37,9 +44,9 @@ jobs:
       - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ steps.decode_key.outputs.SSH_KEY }}
+          host: ${{ secrets.BASTION_HOST }}  # 바스티온 서버의 호스트명 또는 IP 주소
+          username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
+          key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
 
       # - name: Set up SSH
       #   uses: appleboy/ssh-action@master 
@@ -51,7 +58,8 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ steps.decode_key.outputs.SSH_KEY }} -J ec2-user@bastion-ip-address ec2-user@private-ec2-ip-address <<EOF
+          ssh -o StrictHostKeyChecking=no -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
+          ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem
           docker pull ahjung/de-3-1-airflow:latest
           docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
