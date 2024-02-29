@@ -50,6 +50,12 @@ jobs:
       #     # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
       #     key: ${{ secrets.SSH_BASTION_KEY }}
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Write SSH keys
         run: |
