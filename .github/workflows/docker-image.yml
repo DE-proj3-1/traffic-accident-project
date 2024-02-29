@@ -28,12 +28,12 @@ jobs:
           tags: ahjung/de-3-1-airflow:latest
 
 
-      - name: Decode Bastion SSH key
-        id: decode_bastion_key
-        run: |
-          echo "${{ secrets.SSH_BASTION_KEY }}" | base64 -d > de-3-1-key.pem
-          chmod 600 de-3-1-key.pem
-          echo "::set-output name=SSH_KEY::$(cat de-3-1-key.pem)"
+      # - name: Decode Bastion SSH key
+      #   id: decode_bastion_key
+      #   run: |
+      #     echo "${{ secrets.SSH_BASTION_KEY }}" | base64 -d > de-3-1-key.pem
+      #     chmod 600 de-3-1-key.pem
+      #     echo "::set-output name=SSH_KEY::$(cat de-3-1-key.pem)"
 
       - name: Decode Private SSH key
         id: decode_private_key
