@@ -35,31 +35,27 @@ jobs:
       #     chmod 600 de-3-1-key.pem
       #     echo "::set-output name=SSH_KEY::$(cat de-3-1-key.pem)"
 
-      - name: Decode Private SSH key
-        id: decode_private_key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
-          chmod 600 de-3-1-airflow.pem
-          echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
-
-      - name: Set up SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.BASTION_HOST }}  # 바스티온 서버의 호스트명 또는 IP 주소
-          username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
-          # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
-          key: ${{ secrets.SSH_BASTION_KEY }}
+      # - name: Decode Private SSH key
+      #   id: decode_private_key
+      #   run: |
+      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 -d > de-3-1-airflow.pem
+      #     chmod 600 de-3-1-airflow.pem
+      #     echo "::set-output name=SSH_KEY::$(cat de-3-1-airflow.pem)"
 
       # - name: Set up SSH
-      #   uses: appleboy/ssh-action@master 
-      #   # webfactory/ssh-agent@v0.5.3
+      #   uses: appleboy/ssh-action@master
       #   with:
-      #     ssh-private-key: ${{ steps.decode_key.outputs.SSH_KEY }}
+      #     host: ${{ secrets.BASTION_HOST }}  # 바스티온 서버의 호스트명 또는 IP 주소
+      #     username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
+      #     # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
+      #     key: ${{ secrets.SSH_BASTION_KEY }}
+
 
       - name: Write SSH keys
         run: |
           echo "${{ secrets.SSH_BASTION_KEY }}" > de-3-1-key.pem
-          chmod 600 de-3-1-key.pem 
+          echo "${{ secrets.SSH_PRIVATES_KEY }}" > de-3-1-airflow.pem
+          chmod 600 de-3-1-key.pem de-3-1-airflow.pem
 
 
       - name: Deploy to EC2
