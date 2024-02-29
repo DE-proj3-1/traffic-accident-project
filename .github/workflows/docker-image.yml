@@ -59,14 +59,15 @@ jobs:
       - name: Write SSH keys
         run: |
           echo "${{ secrets.SSH_BASTION_KEY }}" > de-3-1-key.pem
-          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > de-3-1-airflow.pem
-          chmod 600 de-3-1-key.pem # de-3-1-airflow.pem
+          chmod 600 de-3-1-key.pem 
+        # echo "${{ secrets.SSH_PRIVATE_KEY }}" > de-3-1-airflow.pem
+        # de-3-1-airflow.pem
 
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -tt -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
-          ssh -o StrictHostKeyChecking=no -tt -i de-3-1-airflow.pem
+          ssh -o StrictHostKeyChecking=no -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
+          ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem
           docker pull ahjung/de-3-1-airflow:latest
           docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
