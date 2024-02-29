@@ -66,8 +66,11 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -tt -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
-          ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem
+          ssh -i "de-3-1-key.pem" ubuntu@${{ secrets.BASTION_HOST }}
+          ssh -i "de-3-1-airflow.pem" ubuntu@${{ secrets.PRIVATE_HOST }}
           docker pull ahjung/de-3-1-airflow:latest
           docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest
           EOF
+
+      # ssh -o StrictHostKeyChecking=no -tt -i de-3-1-key.pem -J ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} <<EOF
+      # ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem
