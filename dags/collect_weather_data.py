@@ -75,7 +75,9 @@ def process_data(transformed_data, coord_df_key, s3_bucket):
 
     replace_values = {'0': '없음', '1': '비', '2': '비/눈', '3': '눈', '4': '소나기', '5': '빗방울', '6': '빗방울눈날림', '7': '눈날림'}
     final_df['rain_form'] = final_df['rain_form'].replace(replace_values)
-    final_df['rain_per'] = pd.to_numeric(final_df['rain_per'].replace('강수없음', 0))
+    
+    final_df['rain_per'] = final_df['rain_per'].str.replace('mm', '').replace('강수없음', '0').replace('1 미만', '0.5').astype(float)
+
     final_df['sky'] = final_df['sky'].replace({'1': '맑음', '3': '구름많음', '4': '흐림'})
 
     # 최종 데이터프레임을 문자열로 변환하여 반환합니다.
@@ -144,7 +146,7 @@ write_to_csv_and_upload_to_s3_task = PythonOperator(
     op_kwargs={
         'final_df': process_data_task.output,
         's3_bucket': 'de-3-1-bucket',
-        's3_key': 'test/weather_data.csv'
+        's3_key': 'acc/weather_data.csv'
     },
     dag=dag
 )
