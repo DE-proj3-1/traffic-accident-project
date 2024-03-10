@@ -1,17 +1,15 @@
-# Airflow image
-FROM apache/airflow:2.5.1
-
-# User root to install airflow packages
+FROM apache/airflow:2.5.1-python3.7
 USER root
 
-# Install airflow packages
-RUN pip install apache-airflow-providers-amazon
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+         vim \
+  && apt-get autoremove -yqq --purge \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
-# Switch back to airflow
+
 USER airflow
-
-# Copy dags to the dags directory
-COPY dags/ /opt/airflow/dags/
-
-# The default command, start airflow webserver and scheduler
-CMD ["airflow", "scheduler", "&", "airflow", "webserver"]
+COPY ./dags /opt/airflow/dags
+RUN pip install --user --upgrade pip
+RUN pip install apache-airflow-providers-snowflake
