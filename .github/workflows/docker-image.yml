@@ -1,10 +1,14 @@
-name: Docker Image CI
+name: Airflow to EC2
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  paths:
+    - 'docker-compose.yaml'
+    - 'Dockerfile'
+    - 'dags'
 
 jobs:
   build:
@@ -13,19 +17,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: ahjung/de-3-1-airflow:latest
 
 
       - name: Set up SSH
@@ -36,19 +27,15 @@ jobs:
           # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
           key: ${{ secrets.SSH_BASTION_KEY }}
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Write SSH keys
+      - name: Transfer Docker Compose and Dockerfile and DAGs to EC2
         run: |
-          echo "${{ secrets.SSH_BASTION_KEY }}" > de-3-1-key.pem
-          echo "${{ secrets.SSH_PRIVATES_KEY }}" > de-3-1-airflow.pem
-          chmod 600 de-3-1-key.pem de-3-1-airflow.pem
+          scp -o StrictHostKeyChecking=no -i de-3-1-key.pem docker-compose.yaml ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i de-3-1-key.pem Dockerfile ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i de-3-1-key.pem -r ./dags ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
 
-      - name: Deploy to EC2
+
+      - name: Deploy Airflow on EC2
         run: |
-          ssh -vvv -o StrictHostKeyChecking=no -i de-3-1-key.pem ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} "ssh -o StrictHostKeyChecking=no -i de-3-1-airflow.pem ${{ secrets.PRIVATE_USERNAME }}@${{ secrets.PRIVATE_HOST }} 'docker pull ahjung/de-3-1-airflow:latest; docker run -d -p 8080:8080 ahjung/de-3-1-airflow:latest'"
+          ssh -o StrictHostKeyChecking=no -i de-3-1-key.pem ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} "\
+          cd /de-3-1-airflow; \
+          docker-compose up -d"
