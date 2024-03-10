@@ -106,7 +106,7 @@ def write_to_csv_and_upload_to_s3(final_df, s3_bucket, s3_key):
     )
 
 dag = DAG(
-    'collect_and_store_data_v2', 
+    'collect_and_process_data', 
     start_date=datetime(2024, 3, 6), 
     schedule_interval='*/30 * * * *'
     )
