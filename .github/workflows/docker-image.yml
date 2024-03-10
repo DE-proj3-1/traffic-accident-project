@@ -5,10 +5,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  paths:
-    - 'docker-compose.yaml'
-    - 'Dockerfile'
-    - 'dags'
+  # paths:
+  #   - 'docker-compose.yaml'
+  #   - 'Dockerfile'
+  #   - 'dags'
 
 jobs:
   build:
