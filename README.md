@@ -28,13 +28,6 @@
 | 인프라 | AWS EC2, Docker |
 | 협업 도구 | Slack, Github, Gather, Notion |
 
-### 프로젝트 아키텍처
-
-![아키텍처_최종.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/b916e5ff-731f-492e-908c-9f62c6d3f824/4caa3f2c-7605-4f66-8ab5-d02428f04467/%E1%84%8B%E1%85%A1%E1%84%8F%E1%85%B5%E1%84%90%E1%85%A6%E1%86%A8%E1%84%8E%E1%85%A5_%E1%84%8E%E1%85%AC%E1%84%8C%E1%85%A9%E1%86%BC.png)
-
-### DB 설계
-
-![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/b916e5ff-731f-492e-908c-9f62c6d3f824/baf6d879-0405-4b49-8b57-528c4d70bf74/Untitled.png)
 
 ### 데이터 파이프라인
 
