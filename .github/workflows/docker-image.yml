@@ -26,16 +26,17 @@ jobs:
           username: ${{ secrets.BASTION_USERNAME }}  # 바스티온 서버의 사용자 이름
           # key: ${{ steps.decode_bastion_key.outputs.SSH_KEY }}  # SSH 키
           key: ${{ secrets.SSH_BASTION_KEY }}
+        
 
       - name: Transfer Docker Compose and Dockerfile and DAGs to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_BASTION_KEY }} docker-compose.yaml ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_BASTION_KEY }} Dockerfile ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_BASTION_KEY }} -r ./dags ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i ./de-3-1-key.pem docker-compose.yaml ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i ./de-3-1-key.pem Dockerfile ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i ./de-3-1-key.pem -r ./dags ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
 
 
       - name: Deploy Airflow on EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i d${{ secrets.SSH_BASTION_KEY }} ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} "\
+          ssh -o StrictHostKeyChecking=no -i ./de-3-1-key.pem ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }} "\
           cd /de-3-1-airflow; \
           docker-compose up -d"
