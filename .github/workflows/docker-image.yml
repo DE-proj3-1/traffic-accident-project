@@ -5,10 +5,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  paths:
-    - 'docker-compose.yaml'
-    - 'Dockerfile'
-    - 'dags'
+  # paths:
+  #   - 'docker-compose.yaml'
+  #   - 'Dockerfile'
+  #   - 'dags'
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Transfer Docker Compose and Dockerfile and DAGs to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i de-3-1-key.pem docker-compose.yaml ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
+          scp -o StrictHostKeyChecking=no -i de-3-1-key.pem docker-compose.yaml ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/.
           scp -o StrictHostKeyChecking=no -i de-3-1-key.pem Dockerfile ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
           scp -o StrictHostKeyChecking=no -i de-3-1-key.pem -r ./dags ${{ secrets.BASTION_USERNAME }}@${{ secrets.BASTION_HOST }}:/de-3-1-airflow
 
