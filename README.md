@@ -46,6 +46,13 @@
 
 ## 프로젝트 세부내용
 
+### 프로젝트 아키텍처
+![image](https://github.com/DE-proj3-1/traffic-accident-project/assets/51227226/cd52fc00-31d8-42a3-8648-07126b3dbf0a)
+
+### ERD
+![image](https://github.com/DE-proj3-1/traffic-accident-project/assets/51227226/bd169129-a9aa-46ec-a53c-c6502c8ce2ab)
+
+
 ### 데이터 파이프라인
 
 **수집 데이터**
@@ -61,6 +68,9 @@
         - 다발지역 선정조건 : 반경 100m내, 대상사고 4건 이상 발생지
     - [사망교통사고정보 API](https://opendata.koroad.or.kr/api/selectDeathDataSet.do)
         - 교통사고 일시 부터 30일이내 사망한경우를 사망교통사고라 정의하고 사고정보를 선택한 조건에 따라 json/xml형식으로 제공합니다.
+     
+### 최종 결과물
+![image](https://github.com/DE-proj3-1/traffic-accident-project/assets/51227226/d7e3d824-9021-4b4b-979b-629204eb22c6)
 
 ### 팀원 소개 및 역할
 
