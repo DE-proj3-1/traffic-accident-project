@@ -17,17 +17,34 @@
 - AWS Lambda 및 Airflow Dag를 통한 ETL, ELT 경험
 - CI/CD 구축 경험
 
+## 활용기술
+
+### 데이터 수집
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Apache Airflow](https://img.shields.io/badge/Apache%20Airflow-017CEE?style=for-the-badge&logo=Apache%20Airflow&logoColor=white)
+![AWS Lambda](https://img.shields.io/badge/AWS%20Lambda-FF9900?style=for-the-badge&logo=AWS%20Lambda&logoColor=black)             
+
+
+### 데이터 적재
+![amazons3](https://img.shields.io/badge/amazon%20s3-569A31?style=for-the-badge&logo=amazons3&logoColor=white)
+![amazonredshift](https://img.shields.io/badge/amazon%20redshift-8C4FFF?style=for-the-badge&logo=amazonredshift&logoColor=ffffff)
+
+### 인프라
+![amazonec2](https://img.shields.io/badge/amazon%20ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=000000)
+![docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=ffffff)
+
+### 데이터 시각화
+![preset](https://img.shields.io/badge/preset-1BB3A4?style=for-the-badge&logo=preset&logoColor=61DAFB)
+
+
+### 협업 도구
+![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white)
+![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Gathertown](https://img.shields.io/badge/Gather%20town-017CEE?style=for-the-badge&logo=gathertown&logoColor=white)
+
 ## 프로젝트 세부내용
-
-### 활용기술
-
-| 데이터 수집 | Python, Airflow, AWS lambda |
-| --- | --- |
-| 데이터 적재 | AWS S3, Redshift |
-| 데이터 시각화 | Preset |
-| 인프라 | AWS EC2, Docker |
-| 협업 도구 | Slack, Github, Gather, Notion |
-
 
 ### 데이터 파이프라인
 
@@ -44,3 +61,10 @@
         - 다발지역 선정조건 : 반경 100m내, 대상사고 4건 이상 발생지
     - [사망교통사고정보 API](https://opendata.koroad.or.kr/api/selectDeathDataSet.do)
         - 교통사고 일시 부터 30일이내 사망한경우를 사망교통사고라 정의하고 사고정보를 선택한 조건에 따라 json/xml형식으로 제공합니다.
+
+### 팀원 소개 및 역할
+
+| 이름 | 역할 | 깃허브 |
+| --- | --- | --- |
+| 최아정 | CI/CD, 데이터 수집, ERD, ETL, ELT, 대시보드 구성 | [@AJ15H](https://github.com/AJ15H) |
+| 황예원 | 인프라 구성, 데이터 수집, ERD, ETL, ELT, DB 구축, 대시보드 구성  | [@wwyyww](https://github.com/wwyyww) |
