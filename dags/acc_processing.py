@@ -96,7 +96,7 @@ default_args = {
 with DAG('location_update_dag',
          default_args=default_args,
          description='Add latitude, longitude, address columns to Seoul Live Accident CSV',
-         schedule_interval='0 * * * *') as dag:
+         schedule_interval=timedelta(minutes=10)) as dag:
     
     check_s3_connection_task = PythonOperator(
         task_id='check_s3_connection_task',

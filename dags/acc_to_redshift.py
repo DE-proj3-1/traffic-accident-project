@@ -56,7 +56,7 @@ dag = DAG(
     'accident_s3_to_redshift_dag',
     default_args=default_args,
     description='Add seoul live accident data to redshift',
-    schedule_interval=timedelta(hours=1),
+    schedule_interval=timedelta(minutes=10),
     catchup=False
 )
 transfer_s3_to_redshift = PythonOperator(
